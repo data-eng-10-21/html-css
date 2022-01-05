@@ -1,5 +1,5 @@
 import click
-from indeed_client import get_job_cards, get_card_from
+from adapters.indeed_client import get_job_cards, get_card_from
 import pdb
 
 @click.group()
@@ -13,8 +13,8 @@ def cli_tools():
     pass
 
 @cli_tools.command(name='scrape_jobs', help='help scrape_jobs')
-def scrape_jobs(index = 0, position = 'data engineer'):
-    cards = get_job_cards(index, position = 'data engineer', location = 'United States', start = 0)
+def scrape_jobs(start = 0, position = 'data engineer'):
+    cards = get_job_cards(position = 'data engineer', location = 'United States', start = 0)
     print(cards)
 
 

@@ -7,16 +7,16 @@ header = {
   "X-Requested-With": "XMLHttpRequest"
 }
 
-def get_job_cards(index, position = 'data engineer', location = 'United States', start = 0):
+def get_indeed_html(position = 'data engineer', location = 'United States', start = 0):
     url = 'https://www.indeed.com/jobs'
-    params = {'q': position, 'l': location, 'explvl':'entry_level', 'start': index}
-    response = requests.get(url, params = params, headers=header, timeout=10)
-    soup = bs(response.text, 'html.parser')
-    cards = soup.findAll('a', id=re.compile('^job_'))
-    return cards
+    params = {'q': position, 'l': location, 'explvl':'entry_level', 'start': start}
+    response = requests.get(url, params = params, timeout=10)
+    return response.text
 
-def get_card_from(id):
-    desc_string = f"https://www.indeed.com/rpc/jobdescs?jks={id}"
-    desc_response = requests.get(desc_string, headers=header)
-    description_response = desc_response.json()
-    return description_response
+    
+def get_job_cards(position = 'data engineer', location = 'United States', start = 0):
+  html_string = get_indeed_html(position = position, location = location, start = start)
+  
+  soup = bs(html_string, 'html.parser')
+  cards = soup.findAll('a', {'class': 'result'})
+  return cards
